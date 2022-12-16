@@ -1,0 +1,137 @@
+<?php
+$productInquiryHelper = $this->helper(\Risecommerce\ProductInquiry\Helper\Data::class);
+$customerName = $productInquiryHelper->getUserName();
+$customerEmail = $productInquiryHelper->getUserEmail();
+?>
+<script>
+    require(['jquery', 'mage/validation'], function ($) {
+        var dataForm = $('#risecommerce-product-inquiry-popup-modal-form');
+        dataForm.mage('validation', {});
+        $('#risecommerce_product_inquiry_submit').click(function () {
+            var status = dataForm.validation('isValid');
+            if (status) {
+                $.ajax({
+                    type: 'post',
+                    url: '<?= $block->escapeUrl($block->getUrl("product_inquiry")) ?>',
+                    data: $('#risecommerce-product-inquiry-popup-modal-form').serialize(),
+                    cache: false,
+                    showLoader: 'true',
+                    success: function (response) {
+                        var msg = response.split("::");
+                        if (msg[0] == '1') {
+                            $('.note').show();
+                            $('.note').css('color', 'green');
+                            document.getElementById("risecommerce-product-inquiry-popup-modal-form").reset();
+                            setTimeout(function () {
+                                $(".risecommerce-product-inquiry-popup-modal").modal("closeModal");
+                            }, 3000);
+                        } else {
+                            $('.note').show();
+                            $('.note').css('color', 'red');
+                        }
+
+                        $('.note').html(msg[1]);
+
+
+                    }
+                });
+                return false;
+            }
+        });
+    });
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function ($, modal) {
+            $(document).ready(function () {
+                if ($('.risecommerce-product-inquiry-popup-modal').length > 0) {
+                    var risecommerceProductInquiryPopupOptions = {
+                        type: 'popup',
+                        responsive: true,
+                        innerScroll: true,
+                        title: '',
+                        buttons: []
+                    };
+
+                    var risecommerceProductInquiryPopup = modal(risecommerceProductInquiryPopupOptions, $('.risecommerce-product-inquiry-popup-modal'));
+
+                    $(".risecommerce_product_inquiry_link").click(function () {
+                        $('.note').hide();
+                        $(".risecommerce_product_inquiry_sku").val($(this).attr("data-product-inquiry-sku"));
+                        $(".display_risecommerce_product_inquiry_model_title").html($(this).attr("data-product-inquiry-name"));
+                        $(".risecommerce-product-inquiry-popup-modal").modal("openModal");
+                    });
+                }
+            });
+
+        }
+    );
+</script>
+<div class="risecommerce-product-inquiry-popup-modal" style="display:none;">
+    <div><h2 class="display_risecommerce_product_inquiry_model_title"></h2></div>
+    <hr>
+    <form id="risecommerce-product-inquiry-popup-modal-form" method="post"
+          action="<?= $block->escapeHtmlAttr($block->getBaseUrl()); ?>product_inquiry" class="form"
+          data-mage-init='{"validation":{}}'>
+        <fieldset class="fieldset risecommerce_product_inquiry_fieldset">
+            <div class="fields">
+                <div class="field note no-label">&nbsp;</div>
+                <div class="field name required">
+                    <label class="label"
+                           for="risecommerce_product_inquiry_name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
+                    <div class="control">
+                        <input placeholder="<?= $block->escapeHtmlAttr(__('Name')) ?>"
+                               name="risecommerce_product_inquiry_name" title="<?= $block->escapeHtmlAttr(__('Name')) ?>"
+                               value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)->getPostValue('risecommerce_product_inquiry_name') ?: $customerName) ?>"
+                               class="input-text" type="text" data-validate='{"required":true}'/>
+                    </div>
+                </div>
+                <div class="field phone">
+                    <label class="label"
+                           for="risecommerce_product_inquiry_phone"><span><?= $block->escapeHtml(__('Phone')) ?></span></label>
+                    <div class="control">
+                        <input placeholder="<?= $block->escapeHtmlAttr(__('Phone')) ?>"
+                               name="risecommerce_product_inquiry_phone" title="<?= $block->escapeHtmlAttr(__('Phone')) ?>"
+                               value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)->getPostValue('risecommerce_product_inquiry_phone')) ?>"
+                               class="input-text" type="text"/>
+                    </div>
+                </div>
+                <div class="field email required">
+                    <label class="label"
+                           for="risecommerce_product_inquiry_email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                    <div class="control">
+                        <input placeholder="<?= $block->escapeHtmlAttr(__('Email')) ?>"
+                               name="risecommerce_product_inquiry_email" title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
+                               value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)->getPostValue('risecommerce_product_inquiry_email') ?: $customerEmail) ?>"
+                               class="input-text" type="text" data-validate="{required:true, 'validate-email':true}"/>
+                    </div>
+                </div>
+                <div class="field description required">
+                    <label class="label"
+                           for="risecommerce_product_inquiry_description"><span><?= $block->escapeHtml(__('Description')) ?></span></label>
+                    <div class="control">
+                        <textarea placeholder="<?= $block->escapeHtmlAttr(__('Description')) ?>"
+                                  data-validate='{"required":true}' name="risecommerce_product_inquiry_description"
+                                  class="risecommerce_product_inquiry_description"
+                                  title="<?= $block->escapeHtmlAttr(__('Description')) ?>" cols="30"
+                                  rows="10"><?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)->getPostValue('risecommerce_product_inquiry_description')) ?></textarea>
+                    </div>
+                </div>
+                <input placeholder="<?= $block->escapeHtmlAttr(__('SKU')) ?>" name="risecommerce_product_inquiry_sku"
+                       title="<?= $block->escapeHtmlAttr(__('SKU')) ?>"
+                       value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)->getPostValue('risecommerce_product_inquiry_sku')) ?>"
+                       class="input-text risecommerce_product_inquiry_sku" type="hidden" data-validate='{"required":true}'/>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary"
+                        id="risecommerce_product_inquiry_submit">
+                    <span><?= $block->escapeHtml(__('Submit')) ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

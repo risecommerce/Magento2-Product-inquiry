@@ -1,0 +1,36 @@
+<script>
+    require([
+        'jquery',
+        'uiRegistry',
+    ], function ($, uiRegistry) {
+        $(function () {
+            $(document).on("click", "[data-index=product-inquiry]", function(){
+                if($("input[name='product[is_product_inquiry_enable]']").val() == 0){
+                    $('[data-index=product_inquiry_label]').hide();
+                    $('[data-index=is_addtocart_allowed]').hide();
+                    $('[data-index=is_product_price_disclosed]').hide();
+                }
+                else
+                {
+                    $('[data-index=product_inquiry_label]').show();
+                    $('[data-index=is_addtocart_allowed]').show();
+                    $('[data-index=is_product_price_disclosed]').show();
+                }
+            });
+
+            $(document).on("change", "input[name='product[is_product_inquiry_enable]']", function(){
+                if($("input[name='product[is_product_inquiry_enable]']").val() == 0){
+                    $('[data-index=product_inquiry_label]').hide();
+                    $('[data-index=is_addtocart_allowed]').hide();
+                    $('[data-index=is_product_price_disclosed]').hide();
+                }
+                else
+                {
+                    $('[data-index=product_inquiry_label]').show();
+                    $('[data-index=is_addtocart_allowed]').show();
+                    $('[data-index=is_product_price_disclosed]').show();
+                }
+            });
+        });
+    });
+</script>

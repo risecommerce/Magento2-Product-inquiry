@@ -1,0 +1,39 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+
+<?php $_product = $block->getProduct() ?>
+
+<?php
+$productInquiryHelper = $this->helper(\Risecommerce\ProductInquiry\Helper\Data::class);
+$allowAddToCart = $productInquiryHelper->getAllowAddtocart($_product->getId());
+$inquiryTitle = $productInquiryHelper->getInquiryTitle($_product->getId());
+$productInquirySku = $_product->getSku();
+$productInquiryName = $_product->getName();
+?>
+
+<?php if ($_product->isSaleable() && $block->hasOptions() && $allowAddToCart):?>
+    <div class="bundle-actions">
+        <button id="bundle-slide"
+                class="action primary customize"
+                type="button">
+            <span><?= /* @escapeNotVerified */ __('Customize and Add to Cart') ?></span>
+        </button>
+    </div>
+<?php endif;?>
+<?php if($inquiryTitle) { ?>
+    <div class="bundle-actions">
+        <button type="button"
+                class="action primary customize risecommerce_product_inquiry_link"
+                data-product-inquiry-sku="<?php echo $block->escapeHtmlAttr($productInquirySku);?>"
+                data-product-inquiry-name="<?php echo $block->escapeHtmlAttr($productInquiryName);?>">
+            <span><?php echo $inquiryTitle; ?></span>
+        </button>
+    </div>
+<?php } ?>
+

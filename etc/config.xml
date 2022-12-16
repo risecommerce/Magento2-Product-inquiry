@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <product_inquiry>
+            <general>
+                <enable>0</enable>
+                <label>Inquiry</label>
+                <is_addtocart_allowed>1</is_addtocart_allowed>
+                <is_product_price_disclosed>1</is_product_price_disclosed>
+                <sender>general</sender>
+                <email_template>product_inquiry_general_email_template</email_template>
+            </general>            
+        </product_inquiry>
+    </default>
+</config>

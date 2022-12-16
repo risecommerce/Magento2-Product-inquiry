@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance dc" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="content">
+        <block class="Magento\Framework\View\Element\Template" name="risecommerce_product_inquiry" template="Risecommerce_ProductInquiry::catalog/product/view/form.phtml" />
+    </referenceContainer>
+    <referenceBlock name="customer.wishlist.item.cart">
+       <action method="setTemplate">
+           <argument name="template" xsi:type="string">Risecommerce_ProductInquiry::item/column/cart.phtml</argument>
+       </action>
+   </referenceBlock>
+</page>

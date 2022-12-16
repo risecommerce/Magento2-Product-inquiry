@@ -1,0 +1,69 @@
+<?php $_product = $block->getProduct(); ?>
+
+<?php
+$productInquiryHelper = $this->helper(\Risecommerce\ProductInquiry\Helper\Data::class);
+$allowAddToCart = $productInquiryHelper->getAllowAddtocart($_product->getId());
+
+$productInquirySku = $_product->getSku();
+$productInquiryName = $_product->getName();
+
+$inquiryTitle = $productInquiryHelper->getInquiryTitle($_product->getId());
+?>
+
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable() && $allowAddToCart): ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <?php if ($block->shouldRenderQuantity()): ?>
+                <div class="field qty">
+                    <label class="label" for="qty"><span><?= /* @noEscape */
+                            __('Qty') ?></span></label>
+                    <div class="control">
+                        <input type="number"
+                               name="qty"
+                               id="qty"
+                               value="<?= /* @noEscape */
+                                $block->getProductDefaultQty() * 1 ?>"
+                               title="<?= /* @noEscape */
+                                __('Qty') ?>"
+                               class="input-text qty"
+                               data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                        />
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="actions">
+                <button type="submit"
+                        title="<?= /* @noEscape */
+                        $buttonTitle ?>"
+                        class="action primary tocart"
+                        id="product-addtocart-button">
+                    <span><?= /* @noEscape */
+                        $buttonTitle ?></span>
+                </button>
+                <?= $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+{
+    "#product_addtocart_form": {
+        "Magento_Catalog/js/validate-product": {}
+    }
+}
+
+    </script>
+<?php endif; ?>
+<?php if ($inquiryTitle) { ?>
+    <div class="risecommerce_product_inquiry_button box-tocart">
+        <div class="fieldset">
+            <div class="actions">
+                <a class="risecommerce_product_inquiry_link primary action" href="JavaScript:void(0);"
+                   data-product-inquiry-sku="<?= $block->escapeHtmlAttr($productInquirySku); ?>"
+                   data-product-inquiry-name="<?= $block->escapeHtmlAttr($productInquiryName); ?>">
+                    <span><?= $block->escapeHtml($inquiryTitle); ?></span>
+                </a>
+            </div>
+        </div>
+    </div>
+<?php } ?>

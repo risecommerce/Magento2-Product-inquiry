@@ -1,0 +1,19 @@
+{
+    "risecommerce_product_inquiry": {
+        "column": {
+            "entity_id": true,
+            "name": true,
+            "phone": true,
+            "email": true,
+            "description": true,
+            "sku": true,
+            "datetime": true
+        },
+        "index": {
+            "RISECOMMERCE_PRODUCT_INQUIRY_EMAIL": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

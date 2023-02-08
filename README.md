@@ -16,7 +16,7 @@ Method II)
 
 Using Composer
 
-composer require risecommerce/magento-2-product-inquiry-extension:1.0.1
+composer require risecommerce/magento-2-product-inquiry-extension
 
 #Enable Extension:
 - php bin/magento module:enable Risecommerce_ProductInquiry

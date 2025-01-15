@@ -45,7 +45,7 @@ class Index extends Action
      * @var \Magento\Framework\Translate\Inline\StateInterface
      */
     protected $_inlineTranslation;
-
+    protected $_inquiryFactory;
     /**
      * Index constructor.
      * @param \Magento\Framework\App\Action\Context $context
@@ -99,27 +99,26 @@ class Index extends Action
             $postObject = new \Magento\Framework\DataObject();
             $postObject->setData($post);
 
-            $error = false;
+  //          $error = false;
 
-            if (!\Zend_Validate::is(trim((string)$post['risecommerce_product_inquiry_name']), 'NotEmpty')) {
-                $error = true;
-            }
-            if (!\Zend_Validate::is(trim((string)$post['risecommerce_product_inquiry_description']), 'NotEmpty')) {
-                $error = true;
-            }
-            if (!\Zend_Validate::is(trim((string)$post['risecommerce_product_inquiry_email']), 'EmailAddress')) {
-                $error = true;
-            }
-            if (!\Zend_Validate::is(trim((string)$post['risecommerce_product_inquiry_sku']), 'NotEmpty')) {
-                $error = true;
-            }
-            if ($error) {
-                $this->_inlineTranslation->resume();
-                $message = "0::" . __('We can\'t process your request right now.');
-
-                $this->_dataPersistor->set('risecommerce_product_inquiry', $post);
-                return $this->getResponse()->setBody($message);
-            }
+    //        if (trim((string)$post['risecommerce_product_inquiry_name']), 'NotEmpty')) {
+      //          $error = true;
+       //     }
+        //    if (trim((string)$post['risecommerce_product_inquiry_description']), 'NotEmpty')) {
+        //        $error = true;
+        //    }
+        //   if (trim((string)$post['risecommerce_product_inquiry_email']), 'EmailAddress') {
+        //        $error = true;
+        //    }
+        //    if (trim((string)$post['risecommerce_product_inquiry_sku']), 'NotEmpty')) {
+        //        $error = true;
+        //    }
+        //    if ($error) {
+        //        $this->_inlineTranslation->resume();
+        //        $message = "0::" . __('We can\'t process your request right now.');
+       //         $this->_dataPersistor->set('risecommerce_product_inquiry', $post);
+        //        return $this->getResponse()->setBody($message);
+         //   }
 
             $inquiry = $this->_inquiryFactory->create();
             $inquiry->setName($post["risecommerce_product_inquiry_name"]);
